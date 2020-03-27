@@ -24,8 +24,8 @@ public class MainPanel extends JFrame {
         setLayout(new BorderLayout());
         textFieldNetSize.setPreferredSize(new Dimension(50,30));
         textFieldIterations.setPreferredSize(new Dimension(50, 30));
-        textFieldPixelSize.setPreferredSize(new Dimension(50,30))
-        ;
+        textFieldPixelSize.setPreferredSize(new Dimension(50,30));
+
         header.add(buttonStartStop);
         header.add(labelKind);
         header.add(spinnerKinds);
