@@ -1,3 +1,5 @@
+package lab_nr_3;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.Random;
