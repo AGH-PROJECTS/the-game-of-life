@@ -44,6 +44,7 @@ public class MainPanel extends JFrame {
             generate(body.getGraphics(), spinnerKinds.getValue(),textFieldIterations.getText(),textFieldNetSize.getText(),textFieldPixelSize.getText());
         });
 
+
         add(header,BorderLayout.PAGE_START);
         body.setBackground(Color.WHITE);
         add(body,BorderLayout.CENTER);
