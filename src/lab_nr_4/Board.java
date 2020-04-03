@@ -131,35 +131,34 @@ public class Board extends JFrame {
 
             if(!isActionStart) {
                 threadStartStop = new Thread(new Runnable() {
-
-
                     @Override
                     public void run() {
                         isActionStart = true;
                         //iteracja
-                        cells.forEach(rowCells -> rowCells.forEach(cell -> {
-                            if (cell.getBackground() == Color.black) {
-                                mainTab[cells.indexOf(rowCells) + 1][rowCells.indexOf(cell) + 1] = 1;
-                            } else {
-                                mainTab[cells.indexOf(rowCells) + 1][rowCells.indexOf(cell) + 1] = 0;
-                            }
-                        }));
 
-                        for (int i = 1; i < cols + 1; i++) {
-                            mainTab[0][i] = cells.get(rows - 1).get(i - 1).getIsColoured();
-                            mainTab[rows + 1][i] = cells.get(0).get(i - 1).getIsColoured();
-                        }
-
-                        for (int i = 1; i < cols + 1; i++) {
-                            mainTab[i][0] = cells.get(i - 1).get(cols - 1).getIsColoured();
-                            mainTab[i][cols + 1] = cells.get(i - 1).get(0).getIsColoured();
-                        }
-                        mainTab[0][0] = cells.get(rows - 1).get(cols - 1).getIsColoured();
-                        mainTab[rows + 1][cols + 1] = cells.get(0).get(0).getIsColoured();
-                        mainTab[0][cols + 1] = cells.get(rows - 1).get(0).getIsColoured();
-                        mainTab[rows + 1][0] = cells.get(0).get(cols - 1).getIsColoured();
                         //          doOscilator(cells);
                         while (isActionStart) {
+                            cells.forEach(rowCells -> rowCells.forEach(cell -> {
+                                if (cell.getBackground() == Color.black) {
+                                    mainTab[cells.indexOf(rowCells) + 1][rowCells.indexOf(cell) + 1] = 1;
+                                } else {
+                                    mainTab[cells.indexOf(rowCells) + 1][rowCells.indexOf(cell) + 1] = 0;
+                                }
+                            }));
+
+                            for (int i = 1; i < cols + 1; i++) {
+                                mainTab[0][i] = cells.get(rows - 1).get(i - 1).getIsColoured();
+                                mainTab[rows + 1][i] = cells.get(0).get(i - 1).getIsColoured();
+                            }
+
+                            for (int i = 1; i < cols + 1; i++) {
+                                mainTab[i][0] = cells.get(i - 1).get(cols - 1).getIsColoured();
+                                mainTab[i][cols + 1] = cells.get(i - 1).get(0).getIsColoured();
+                            }
+                            mainTab[0][0] = cells.get(rows - 1).get(cols - 1).getIsColoured();
+                            mainTab[rows + 1][cols + 1] = cells.get(0).get(0).getIsColoured();
+                            mainTab[0][cols + 1] = cells.get(rows - 1).get(0).getIsColoured();
+                            mainTab[rows + 1][0] = cells.get(0).get(cols - 1).getIsColoured();
 
                             Integer[][] newTab = new Integer[rows + 2][cols + 2];
                             for(int k = 0; k < rows +2 ; k++) {
