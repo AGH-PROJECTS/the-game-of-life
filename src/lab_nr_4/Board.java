@@ -19,6 +19,7 @@ public class Board extends JFrame {
     private JTextField textFieldWidth = new JTextField("30");
     private JLabel labelHeight = new JLabel("Wysokość");
     private JTextField textFieldHeight = new JTextField("30");
+    private JButton buttonTenIterations = new JButton("10 iteracji");
     private JPanel header = new JPanel();
     private JPanel body = new JPanel();
 
@@ -46,8 +47,10 @@ public class Board extends JFrame {
         header.add(textFieldWidth);
         header.add(labelHeight);
         header.add(textFieldHeight);
+        header.add(buttonTenIterations);
 
         body.setLayout(new GridLayout(rows,cols));
+
         for(int i = 0; i < rows ; i++) {
             List<Cell> rowCells = new ArrayList<>();
             for(int j = 0; j < cols ; j++) {
@@ -134,9 +137,6 @@ public class Board extends JFrame {
                     @Override
                     public void run() {
                         isActionStart = true;
-                        //iteracja
-
-                        //          doOscilator(cells);
                         while (isActionStart) {
                             cells.forEach(rowCells -> rowCells.forEach(cell -> {
                                 if (cell.getBackground() == Color.black) {
@@ -209,12 +209,6 @@ public class Board extends JFrame {
                                 }
                             }
 
-                            for (int i = 0; i < rows + 2; i++) {
-                                for (int j = 0; j < cols + 2; j++) {
-                                    System.out.print(newTab[i][j] + "\t");
-                                }
-                                System.out.println();
-                            }
                             try {
                                 if(!threadStartStop.isInterrupted()) {
                                     sleep(200);
@@ -241,6 +235,103 @@ public class Board extends JFrame {
 
         });
 
+        buttonTenIterations.addActionListener(e->{
+            threadStartStop = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    isActionStart = true;
+                    for(int p=0; p < 10; p++) {
+                        cells.forEach(rowCells -> rowCells.forEach(cell -> {
+                            if (cell.getBackground() == Color.black) {
+                                mainTab[cells.indexOf(rowCells) + 1][rowCells.indexOf(cell) + 1] = 1;
+                            } else {
+                                mainTab[cells.indexOf(rowCells) + 1][rowCells.indexOf(cell) + 1] = 0;
+                            }
+                        }));
+
+                        for (int i = 1; i < cols + 1; i++) {
+                            mainTab[0][i] = cells.get(rows - 1).get(i - 1).getIsColoured();
+                            mainTab[rows + 1][i] = cells.get(0).get(i - 1).getIsColoured();
+                        }
+
+                        for (int i = 1; i < cols + 1; i++) {
+                            mainTab[i][0] = cells.get(i - 1).get(cols - 1).getIsColoured();
+                            mainTab[i][cols + 1] = cells.get(i - 1).get(0).getIsColoured();
+                        }
+                        mainTab[0][0] = cells.get(rows - 1).get(cols - 1).getIsColoured();
+                        mainTab[rows + 1][cols + 1] = cells.get(0).get(0).getIsColoured();
+                        mainTab[0][cols + 1] = cells.get(rows - 1).get(0).getIsColoured();
+                        mainTab[rows + 1][0] = cells.get(0).get(cols - 1).getIsColoured();
+
+                        Integer[][] newTab = new Integer[rows + 2][cols + 2];
+                        for(int k = 0; k < rows +2 ; k++) {
+                            for(int l = 0; l < cols +2; l++) {
+                                newTab[k][l] = mainTab[k][l];
+                            }
+                        }
+
+
+                        for(int i = 1; i <= rows; i++) {
+                            for(int j = 1; j <= cols; j++) {
+                                Integer[] neighboursTab = new Integer[8];
+                                int isAlive = mainTab[i][j];
+
+                                neighboursTab[0]= mainTab[i-1][j-1];
+                                neighboursTab[1] = mainTab[i-1][j];
+                                neighboursTab[2] = mainTab[i-1][j+1];
+                                neighboursTab[3] = mainTab[i][j-1];
+                                neighboursTab[4] = mainTab[i][j+1];
+                                neighboursTab[5] = mainTab[i+1][j-1];
+                                neighboursTab[6] = mainTab[i+1][j];
+                                neighboursTab[7] = mainTab[i+1][j+1];
+
+                                int aliveNeighbours = (int) Arrays.stream(neighboursTab).filter(a->a==1).count();
+
+                                if(isAlive == 0) {
+                                    if(aliveNeighbours == 3) {
+                                        newTab[i][j] = 1;
+                                        cells.get(i - 1).get(j - 1).setBackground(Color.black);
+                                    }
+                                }
+                                else {
+                                    if(aliveNeighbours == 3 || aliveNeighbours == 2) {
+                                        newTab[i][j] = 1;
+                                        cells.get(i - 1).get(j - 1).setBackground(Color.black);
+                                    }
+
+                                    if(aliveNeighbours > 3) {
+                                        newTab[i][j] = 0;
+                                        cells.get(i - 1).get(j - 1).setBackground(Color.white);
+                                    }
+
+                                    if(aliveNeighbours < 2) {
+                                        newTab[i][j] = 0;
+                                        cells.get(i - 1).get(j - 1).setBackground(Color.white);
+                                    }
+                                }
+                            }
+                        }
+
+                        try {
+                            if(!threadStartStop.isInterrupted()) {
+                                sleep(200);
+                                System.out.println();
+                            }
+                        } catch (InterruptedException ex) {
+                            ex.printStackTrace();
+                        }
+
+                        for(int k = 0; k < rows +2 ; k++) {
+                            for(int l = 0; l < cols +2; l++) {
+                                mainTab[k][l] = newTab[k][l];
+                            }
+                        }
+                    }
+                }
+            });
+
+            threadStartStop.start();
+        });
         add(body,BorderLayout.CENTER);
 
         add(header,BorderLayout.PAGE_START);
