@@ -131,7 +131,6 @@ public class Board extends JFrame {
         });
 
         buttonStartStop.addActionListener(e-> {
-
             if(!isActionStart) {
                 threadStartStop = new Thread(new Runnable() {
                     @Override
@@ -166,7 +165,6 @@ public class Board extends JFrame {
                                     newTab[k][l] = mainTab[k][l];
                                 }
                             }
-
 
                             for(int i = 1; i <= rows; i++) {
                                 for(int j = 1; j <= cols; j++) {
@@ -212,7 +210,6 @@ public class Board extends JFrame {
                             try {
                                 if(!threadStartStop.isInterrupted()) {
                                     sleep(200);
-                                    System.out.println();
                                 }
                             } catch (InterruptedException ex) {
                                 ex.printStackTrace();
@@ -315,7 +312,6 @@ public class Board extends JFrame {
                         try {
                             if(!threadStartStop.isInterrupted()) {
                                 sleep(200);
-                                System.out.println();
                             }
                         } catch (InterruptedException ex) {
                             ex.printStackTrace();

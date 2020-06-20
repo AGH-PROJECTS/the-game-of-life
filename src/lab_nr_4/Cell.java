@@ -19,7 +19,6 @@ public class Cell extends JPanel {
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                System.out.println("x:" + x + ";y" + y );
                 setBackground(Color.black);
                 isColoured = 1;
             }
