@@ -3,4 +3,4 @@
 [The game of life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life)
 
 **Example of usage:**
-![](presentation.gif)
+![](src/presentation.gif)
